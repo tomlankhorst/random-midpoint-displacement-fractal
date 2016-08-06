@@ -35,7 +35,12 @@ function [ F ] = rmdf( steps, height, roughness, seed )
            % Store the current image
            F_ = F;
            % Resize the image to the new size to have nice interpolation
+           % For Octave compatibility the range of an image must be [0,1]
+           Fmin = min(F(:));
+           Fmax = max(F(:));
+           F  = (F-Fmin)./(Fmax-Fmin);
            F  = imresize(F,[L L]);
+           F  = F.*(Fmax-Fmin)+Fmin;
 
            % Set the original values to the upscaled image
            F(1:2:end,1:2:end) = F_;
