@@ -8,7 +8,7 @@ roughness   = 0.76;     % Roughness
 seed 		= 9133759;  % randi(10^7);
 
 tic;
-rmdf( steps, height, roughness, seed );
+F = rmdf( steps, height, roughness, seed );
 toc
 
 mapsize     = 1e4;      % Map size edge (meter)

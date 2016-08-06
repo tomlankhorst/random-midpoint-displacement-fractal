@@ -19,7 +19,10 @@ function [ F ] = rmdf( steps, height, roughness, seed )
     % This is fast and allows for parallelization and GPU usage.
     Kcross = [0 1 0; 1 0 1; 0 1 0]./4;
     Kdiag  = [1 0 1; 0 0 0; 1 0 1]./4;
-
+    
+    % On the GPU
+    F = gpuArray( F );
+    
     % For every step...
     for s = 1:steps
 
@@ -41,6 +44,7 @@ function [ F ] = rmdf( steps, height, roughness, seed )
            F(1:2:end,1:2:end) = F_;
            % Filter the image with the diagonal kernel
            F_ = imfilter(F,Kdiag);
+           
            % Only keep the center part
            F_ = F_(2:2:end,2:2:end);
 
@@ -80,5 +84,7 @@ function [ F ] = rmdf( steps, height, roughness, seed )
 
     end
 
+    F = gather( F );
+    
 end
 
